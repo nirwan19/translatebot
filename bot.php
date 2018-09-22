@@ -9,8 +9,8 @@ Modified @ Farzain - zFz
 require_once('./line_class.php');
 require_once('./unirest-php-master/src/Unirest.php');
 
-$channelAccessToken = 'YOUR-CHANNEL-ACCESS-TOKEN'; //sesuaikan 
-$channelSecret = 'YOUR-CHANNEL-SECRET-CODE';//sesuaikan
+$channelAccessToken = 't2KjXuy7+pLHxht+xoWAZyOlzGQoRMRSvo5/wof/xxguoLIm9O7Ae2ysPKdd3/dr6PJcKehDWkXcUsE9TohhRZXjSrPQuOdPYlC/hxeB6/xQaCbAfb3uFCwi2loNQJiHM6JXLeoSRRoZiCAdUkTcaQdB04t89/1O/w1cDnyilFU='; //sesuaikan 
+$channelSecret = '11433f07affabf4d33057fa901262fd4';//sesuaikan
 
 $client = new LINEBotTiny($channelAccessToken, $channelSecret);
 
@@ -69,7 +69,7 @@ function shalat($keyword) {
 
 //show menu, saat join dan command /menu
 if ($type == 'join' || $command == '/menu') {
-    $text = "Assalamualaikum Kakak, aku adalah bot jadwal shalat, silahkan ketik\n\n/shalat <nama tempat>\n\nnanti aku bakalan kasih tahu jam berapa waktunya shalat ^_^";
+    $text = "Assalamualaikum Agan, untuk mendapatkan jadwal shalat, silahkan ketik\n\n shalat <nama tempat>\n\nnanti aku bakalan kasih tahu jam berapa waktunya shalat ^_^";
     $balas = array(
         'replyToken' => $replyToken,
         'messages' => array(
@@ -83,7 +83,7 @@ if ($type == 'join' || $command == '/menu') {
 
 //pesan bergambar
 if($message['type']=='text') {
-	    if ($command == '/shalat') {
+	    if ($command == 'shalat') {
 
         $result = shalat($options);
         $balas = array(
@@ -95,8 +95,31 @@ if($message['type']=='text') {
                 )
             )
         );
-    }
+    }else if ($command == 'Shalat') {
 
+        $result = shalat($options);
+        $balas = array(
+            'replyToken' => $replyToken,
+            'messages' => array(
+                array(
+                    'type' => 'text',
+                    'text' => $result
+                )
+            )
+        );
+	    }else if ($command == 'SHALAT') {
+
+        $result = shalat($options);
+        $balas = array(
+            'replyToken' => $replyToken,
+            'messages' => array(
+                array(
+                    'type' => 'text',
+                    'text' => $result
+                )
+            )
+        );
+	    }
 }else if($message['type']=='sticker')
 {	
 	$balas = array(
