@@ -30,7 +30,7 @@ if (count($pesan_datang) > 2) {
 }
 
 #-------------------------[Function]-------------------------#
-function translate($keyword) {
+function translateEn($keyword) {
     $uri = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20180926T193705Z.c703e24d71c28672.2147927d0c29e0a6a705eec6388e418ad2a1bcfc&text=" . $keyword . "&lang=id-en";
 
     $response = Unirest\Request::get("$uri");
@@ -40,6 +40,18 @@ function translate($keyword) {
 	$result .= $json['text']['0'];
     return $result;
 }
+
+function translateId($keyword) {
+    $uri = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20180926T193705Z.c703e24d71c28672.2147927d0c29e0a6a705eec6388e418ad2a1bcfc&text=" . $keyword . "&lang=en-id";
+
+    $response = Unirest\Request::get("$uri");
+
+    $json = json_decode($response->raw_body, true);
+    $result = "Indonesia  : ";
+	$result .= $json['text']['0'];
+    return $result;
+}
+
 #-------------------------[Function]-------------------------#
 
 # require_once('./src/function/search-1.php');
@@ -50,7 +62,7 @@ function translate($keyword) {
 
 //show menu, saat join dan command /menu
 if ($type == 'join' || $command == 'menu') {
-    $text = "Assalamualaikum Agan, untuk mendapatkan jadwal shalat, silahkan ketik\n\n shalat <nama tempat>\n\nnanti aku bakalan kasih tahu jam berapa waktunya shalat ^_^";
+    $text = "Assalamualaikum Agan, Silahkan untuk menerjemahkan bahasa Inggris, ketik EN (kalimat yg ingin di terjemahkan)... atau untuk bahasa Indonesia bisa ketik ID (kalimat yg ingin di terjemahkan).. ^_^";
     $balas = array(
         'replyToken' => $replyToken,
         'messages' => array(
@@ -66,7 +78,7 @@ if ($type == 'join' || $command == 'menu') {
 if($message['type']=='text') {
 	    if ($command == 'id' || $command == 'Id'|| $command == 'ID') {
 
-        $result = translate($options);
+        $result = translateId($options);
         $balas = array(
             'replyToken' => $replyToken,
             'messages' => array(
@@ -78,19 +90,7 @@ if($message['type']=='text') {
         );
     }else if ($command == 'en'|| $command == 'En'|| $command == 'EN') {
 
-        $result = translate($options);
-        $balas = array(
-            'replyToken' => $replyToken,
-            'messages' => array(
-                array(
-                    'type' => 'text',
-                    'text' => $result
-                )
-            )
-        );
-	    }else if ($command == 'SHALAT') {
-
-        $result = shalat($options);
+        $result = translateEn($options);
         $balas = array(
             'replyToken' => $replyToken,
             'messages' => array(
