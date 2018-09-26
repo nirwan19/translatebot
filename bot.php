@@ -1,16 +1,9 @@
 <?php
-/*
-copyright @ medantechno.com
-Modified @ Farzain - zFz
-2017
-
-*/
-
 require_once('./line_class.php');
 require_once('./unirest-php-master/src/Unirest.php');
 
-$channelAccessToken = 't2KjXuy7+pLHxht+xoWAZyOlzGQoRMRSvo5/wof/xxguoLIm9O7Ae2ysPKdd3/dr6PJcKehDWkXcUsE9TohhRZXjSrPQuOdPYlC/hxeB6/xQaCbAfb3uFCwi2loNQJiHM6JXLeoSRRoZiCAdUkTcaQdB04t89/1O/w1cDnyilFU='; //sesuaikan 
-$channelSecret = '11433f07affabf4d33057fa901262fd4';//sesuaikan
+$channelAccessToken = 'gMqU7SJUCGppP/616TUfT3+B2b16iDmhL8+gT9PDA4CCv6cpzkd/UJZFdgPXNZSTX1O5sBxSMIB30N0lvdIzINe17ouTQGVtSJ8BA3rBQ1DAN4aSfDyuv2CWqJ2BMi+x0CN1SjCzoVc8AzGs/JxeCAdB04t89/1O/w1cDnyilFU='; //sesuaikan 
+$channelSecret = '0202b42df3512e6ceacd794ffb54e4a3';//sesuaikan
 
 $client = new LINEBotTiny($channelAccessToken, $channelSecret);
 
@@ -37,26 +30,14 @@ if (count($pesan_datang) > 2) {
 }
 
 #-------------------------[Function]-------------------------#
-function shalat($keyword) {
-    $uri = "https://time.siswadi.com/pray/" . $keyword;
+function translate($keyword) {
+    $uri = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20180926T193705Z.c703e24d71c28672.2147927d0c29e0a6a705eec6388e418ad2a1bcfc&text=" . $keyword . "&lang=id-en";
 
     $response = Unirest\Request::get("$uri");
 
     $json = json_decode($response->raw_body, true);
-    $result = "Jadwal Shalat Sekitar ";
-	$result .= $json['location']['address'];
-	$result .= "\nTanggal : ";
-	$result .= $json['time']['date'];
-	$result .= "\n\nShubuh : ";
-	$result .= $json['data']['Fajr'];
-	$result .= "\nDzuhur : ";
-	$result .= $json['data']['Dhuhr'];
-	$result .= "\nAshar : ";
-	$result .= $json['data']['Asr'];
-	$result .= "\nMaghrib : ";
-	$result .= $json['data']['Maghrib'];
-	$result .= "\nIsya : ";
-	$result .= $json['data']['Isha'];
+    $result = "English  : ";
+	$result .= $json['text']['0'];
     return $result;
 }
 #-------------------------[Function]-------------------------#
@@ -68,7 +49,7 @@ function shalat($keyword) {
 # require_once('./src/function/hard.php');
 
 //show menu, saat join dan command /menu
-if ($type == 'join' || $command == '/menu') {
+if ($type == 'join' || $command == 'menu') {
     $text = "Assalamualaikum Agan, untuk mendapatkan jadwal shalat, silahkan ketik\n\n shalat <nama tempat>\n\nnanti aku bakalan kasih tahu jam berapa waktunya shalat ^_^";
     $balas = array(
         'replyToken' => $replyToken,
@@ -83,9 +64,9 @@ if ($type == 'join' || $command == '/menu') {
 
 //pesan bergambar
 if($message['type']=='text') {
-	    if ($command == 'shalat') {
+	    if ($command == 'id' || $command == 'Id'|| $command == 'ID') {
 
-        $result = shalat($options);
+        $result = translate($options);
         $balas = array(
             'replyToken' => $replyToken,
             'messages' => array(
@@ -95,9 +76,9 @@ if($message['type']=='text') {
                 )
             )
         );
-    }else if ($command == 'Shalat') {
+    }else if ($command == 'en'|| $command == 'En'|| $command == 'EN') {
 
-        $result = shalat($options);
+        $result = translate($options);
         $balas = array(
             'replyToken' => $replyToken,
             'messages' => array(
