@@ -52,6 +52,27 @@ function translateId($keyword) {
     return $result;
 }
 
+function translateAr($keyword) {
+    $uri = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20180926T193705Z.c703e24d71c28672.2147927d0c29e0a6a705eec6388e418ad2a1bcfc&text=" . $keyword . "&lang=id-ar";
+
+    $response = Unirest\Request::get("$uri");
+
+    $json = json_decode($response->raw_body, true);
+    $result = "Indonesia  : ";
+	$result .= $json['text']['0'];
+    return $result;
+}
+function translateDe($keyword) {
+    $uri = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20180926T193705Z.c703e24d71c28672.2147927d0c29e0a6a705eec6388e418ad2a1bcfc&text=" . $keyword . "&lang=id-de";
+
+    $response = Unirest\Request::get("$uri");
+
+    $json = json_decode($response->raw_body, true);
+    $result = "Indonesia  : ";
+	$result .= $json['text']['0'];
+    return $result;
+}
+
 #-------------------------[Function]-------------------------#
 
 # require_once('./src/function/search-1.php');
@@ -100,6 +121,30 @@ if($message['type']=='text') {
                 )
             )
         );
+	    }else if ($command == 'ar'|| $command == 'Ar'|| $command == 'AR') {
+
+        $result = translateAr($options);
+        $balas = array(
+            'replyToken' => $replyToken,
+            'messages' => array(
+                array(
+                    'type' => 'text',
+                    'text' => $result
+                )
+            )
+        );
+	    }else if ($command == 'de'|| $command == 'DE'|| $command == 'De') {
+
+        $result = translateAr($options);
+        $balas = array(
+            'replyToken' => $replyToken,
+            'messages' => array(
+                array(
+                    'type' => 'text',
+                    'text' => $result
+                )
+            )
+        );
 	    }
 }else if($message['type']=='sticker')
 {	
@@ -110,6 +155,20 @@ if($message['type']=='text') {
 										'type' => 'text',									
 										'text' => 'Makasih Kak Stikernya ^_^'										
 									
+									)
+							)
+						);
+						
+}else{	
+	$balas = array(
+							'replyToken' => $replyToken,														
+							'messages' => array(
+								array(
+										'type' => 'text',									
+										'text' => 'Sorry gan, Masukkan dulu Kode bahasanya ya'										
+										'text' => '\n ketik HELP untuk Bantuan.. ^_^'										
+									
+
 									)
 							)
 						);
